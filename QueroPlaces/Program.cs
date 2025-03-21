@@ -53,9 +53,6 @@ builder.Services.AddSwaggerGen(c =>
 // Adicionar serviços de persistência (EntityFramework com PostgreSQL)
 builder.Services.AddPersistenceServices(builder.Configuration);
 
-// Adicionar serviços da camada de aplicação
-builder.Services.AddApplicationServices();
-
 // Configurar CORS
 builder.Services.AddCors(options =>
 {
