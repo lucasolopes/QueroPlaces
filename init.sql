@@ -35,6 +35,50 @@
 -- Table structure for table 'ECT_PAIS'
 --
 
+-- Cria o usuário queroplace (se ainda não existir)
+DO
+$$
+BEGIN
+  IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'queroplace') THEN
+    CREATE USER queroplace WITH PASSWORD 'queroplace2025';
+  END IF;
+END
+$$;
+
+-- O banco de dados já foi criado pela variável de ambiente POSTGRES_DB
+-- Conecta ao banco de dados queroplacedb
+\connect queroplacedb;
+
+-- Adiciona a extensão PostGIS para funcionalidades geoespaciais
+CREATE EXTENSION IF NOT EXISTS postgis;
+
+-- Cria o esquema para o Hangfire
+CREATE SCHEMA IF NOT EXISTS hangfire;
+
+-- Concede permissões para o usuário queroplace
+GRANT ALL PRIVILEGES ON DATABASE queroplacedb TO queroplace;
+GRANT ALL PRIVILEGES ON SCHEMA public TO queroplace;
+GRANT ALL PRIVILEGES ON SCHEMA hangfire TO queroplace;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO queroplace;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO queroplace;
+GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public TO queroplace;
+
+-- Define o usuário queroplace como o proprietário das tabelas existentes
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO queroplace;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO queroplace;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON FUNCTIONS TO queroplace;
+
+-- Tenta conceder permissões para PostGIS se a extensão existir
+DO
+$$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_namespace WHERE nspname = 'postgis') THEN
+    GRANT USAGE ON SCHEMA postgis TO queroplace;
+    GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA postgis TO queroplace;
+  END IF;
+END
+$$;
+
 DROP TABLE IF EXISTS "ECT_PAIS";
 
 CREATE TABLE "ECT_PAIS" (

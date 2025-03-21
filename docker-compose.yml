@@ -13,12 +13,12 @@ services:
         condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=postgres;Database=queroplacedb;Username=queroplace;Password=${POSTGRES_PASSWORD:-queroplace2025}
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=queroplacedb;Username=postgres;Password=root
       - ConnectionStrings__Redis=redis:6379
     #  - Elasticsearch__Url=http://elasticsearch:9200
     #  - Elasticsearch__IndexName=addresses
-    #ports:
-    #  - "3000:8080"
+    ports:
+      - "8080:8080"
     networks:
       - queroplace-network
 
@@ -37,7 +37,7 @@ services:
     networks:
       - queroplace-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U queroplace -d queroplacedb"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d queroplacedb"]
       interval: 10s
       timeout: 5s
       retries: 5
