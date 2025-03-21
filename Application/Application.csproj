@@ -8,9 +8,8 @@
 
   <ItemGroup>
     <Folder Include="Extensions\Common\Mappings\" />
-    <Folder Include="Features\Bairro\Handlers\" />
-    <Folder Include="Features\Localidade\Handlers\" />
-    <Folder Include="Features\Logradouro\Handlers\" />
+    <Folder Include="Extensions\GeoSpatial\" />
+    <Folder Include="Features\Endereco\Handlers\" />
   </ItemGroup>
 
   <ItemGroup>
