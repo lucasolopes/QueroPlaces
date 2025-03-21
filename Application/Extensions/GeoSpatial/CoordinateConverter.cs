@@ -11,6 +11,7 @@ public class CoordinateConverter : ICoordinateConverter
     private readonly GeometryFactory _geometryFactory;
     private readonly WKTReader _wktReader;
     private readonly WKTWriter _wktWriter;
+    private const double EarthRadiusKm = 6371.0; // Raio médio da Terra em km
 
     public CoordinateConverter(GeometryFactory geometryFactory)
     {
@@ -70,13 +71,36 @@ public class CoordinateConverter : ICoordinateConverter
 
     public double CalculateDistance(Point point1, Point point2)
     {
-        return point1.Distance(point2);
+        var (lat1, lon1) = FromPoint(point1);
+        var (lat2, lon2) = FromPoint(point2);
+        
+        return CalculateDistance(lat1, lon1, lat2, lon2);
     }
 
     public double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
     {
-        var point1 = ToPoint(lat1, lon1);
-        var point2 = ToPoint(lat2, lon2);
-        return CalculateDistance(point1, point2);
+        // Converter graus para radianos
+        var lat1Rad = ToRadians(lat1);
+        var lon1Rad = ToRadians(lon1);
+        var lat2Rad = ToRadians(lat2);
+        var lon2Rad = ToRadians(lon2);
+
+        // Cálculo usando a fórmula de Haversine
+        var dLat = lat2Rad - lat1Rad;
+        var dLon = lon2Rad - lon1Rad;
+        
+        var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                Math.Cos(lat1Rad) * Math.Cos(lat2Rad) *
+                Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+                
+        var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+        
+        // Distância em quilômetros
+        return EarthRadiusKm * c;
+    }
+
+    private double ToRadians(double degrees)
+    {
+        return degrees * Math.PI / 180;
     }
 }

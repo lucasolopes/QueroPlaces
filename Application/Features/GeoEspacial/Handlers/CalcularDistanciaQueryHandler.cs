@@ -84,12 +84,12 @@ public class CalcularDistanciaQueryHandler : IRequestHandler<CalcularDistanciaQu
             if (!latitudeDestino.HasValue || !longitudeDestino.HasValue)
                 throw new ArgumentException("Não foi possível obter coordenadas do destino");
 
-            // Criar pontos de origem e destino
-            var pontoOrigem = _coordinateConverter.ToPoint(latitudeOrigem.Value, longitudeOrigem.Value);
-            var pontoDestino = _coordinateConverter.ToPoint(latitudeDestino.Value, longitudeDestino.Value);
-
-            // Calcular distância em metros e converter para quilômetros com 2 casas decimais
-            var distanciaKm = Math.Round(_coordinateConverter.CalculateDistance(pontoOrigem, pontoDestino) / 1000, 2);
+            // Calcular distância diretamente usando o método Haversine
+            var distanciaKm = Math.Round(
+                _coordinateConverter.CalculateDistance(
+                    latitudeOrigem.Value, longitudeOrigem.Value,
+                    latitudeDestino.Value, longitudeDestino.Value
+                ), 2);
 
             _logger.LogInformation("Distância calculada: {DistanciaKm} km", distanciaKm);
 

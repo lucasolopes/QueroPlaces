@@ -43,7 +43,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "QueroPlaces API",
         Version = "v1",
-        Description = "API para validação, busca e geocodificação de endereços brasileiros"
+        Description = "API para validacao, busca e geocodificacao de endereços brasileiros"
     });
 
     // Incluir os XMLs de documentação
