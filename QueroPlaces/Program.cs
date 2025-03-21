@@ -82,6 +82,9 @@ builder.Services.AddStackExchangeRedisCache(options =>
 // Adicionar FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
 
+// Adicionar repositórios
+builder.Services.AddRepositories();
+
 // Adicionar compressão de resposta
 builder.Services.AddResponseCompression(options =>
 {
