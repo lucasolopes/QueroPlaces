@@ -4,13 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Domain.Entities;
 
 /// <summary>
-/// Entidade representando faixas de CEP de UF
+///     Entidade representando faixas de CEP de UF
 /// </summary>
 public class FaixaUF
 {
-    [Column("UFE_SG")]
-    [StringLength(2)]
-    public string UF { get; set; } = null!;
+    [Column("UFE_SG")] [StringLength(2)] public string UF { get; set; } = null!;
 
     [Column("UFE_CEP_INI")]
     [StringLength(8)]

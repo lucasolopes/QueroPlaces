@@ -1,15 +1,13 @@
 ﻿using System.Net;
 using System.Text.Json;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace QueroPlaces.Middleware;
 
 public class ExceptionHandlingMiddleware
 {
-    private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+    private readonly RequestDelegate _next;
 
     public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
     {
@@ -32,7 +30,7 @@ public class ExceptionHandlingMiddleware
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";
-        
+
         var statusCode = HttpStatusCode.InternalServerError;
         var errorTitle = "Erro interno do servidor";
         var errorMessage = "Ocorreu um erro inesperado.";
@@ -45,26 +43,27 @@ public class ExceptionHandlingMiddleware
                 statusCode = HttpStatusCode.BadRequest;
                 errorTitle = "Erro de validação";
                 errorMessage = "Um ou mais erros de validação ocorreram.";
-                details = JsonSerializer.Serialize(validationException.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
+                details = JsonSerializer.Serialize(
+                    validationException.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
                 break;
-                
+
             case KeyNotFoundException:
                 statusCode = HttpStatusCode.NotFound;
                 errorTitle = "Recurso não encontrado";
                 errorMessage = "O recurso solicitado não foi encontrado.";
                 break;
-                
+
             case InvalidOperationException:
                 statusCode = HttpStatusCode.BadRequest;
                 errorTitle = "Operação inválida";
                 break;
-                
+
             case UnauthorizedAccessException:
                 statusCode = HttpStatusCode.Unauthorized;
                 errorTitle = "Acesso não autorizado";
                 errorMessage = "Você não tem permissão para acessar este recurso.";
                 break;
-                
+
             default:
                 // Para exceções não tratadas especificamente, log detalhado mas resposta genérica
                 _logger.LogError(exception, "Exceção não tratada: {ExceptionMessage}", exception.Message);
@@ -78,7 +77,7 @@ public class ExceptionHandlingMiddleware
             title = errorTitle,
             status = (int)statusCode,
             message = errorMessage,
-            details = details,
+            details,
             timestamp = DateTime.UtcNow
         };
 

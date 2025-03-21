@@ -5,42 +5,29 @@ using NetTopologySuite.Geometries;
 namespace Domain.Entities;
 
 /// <summary>
-/// Entidade representando logradouros
+///     Entidade representando logradouros
 /// </summary>
 public class Logradouro
 {
-    [Key]
-    [Column("LOG_NU")]
-    public int Id { get; set; }
+    [Key] [Column("LOG_NU")] public int Id { get; set; }
 
-    [Column("UFE_SG")]
-    [StringLength(2)]
-    public string UF { get; set; } = null!;
+    [Column("UFE_SG")] [StringLength(2)] public string UF { get; set; } = null!;
 
-    [Column("LOC_NU")]
-    public int LocalidadeId { get; set; }
+    [Column("LOC_NU")] public int LocalidadeId { get; set; }
 
-    [Column("BAI_NU_INI")]
-    public int? BairroInicialId { get; set; }
+    [Column("BAI_NU_INI")] public int? BairroInicialId { get; set; }
 
-    [Column("BAI_NU_FIM")]
-    public int? BairroFinalId { get; set; }
+    [Column("BAI_NU_FIM")] public int? BairroFinalId { get; set; }
 
-    [Column("LOG_NO")]
-    [StringLength(100)]
-    public string Nome { get; set; } = null!;
+    [Column("LOG_NO")] [StringLength(100)] public string Nome { get; set; } = null!;
 
     [Column("LOG_COMPLEMENTO")]
     [StringLength(100)]
     public string? Complemento { get; set; }
 
-    [Column("CEP")]
-    [StringLength(8)]
-    public string CEP { get; set; } = null!;
+    [Column("CEP")] [StringLength(8)] public string CEP { get; set; } = null!;
 
-    [Column("TLO_TX")]
-    [StringLength(36)]
-    public string TipoLogradouro { get; set; } = null!;
+    [Column("TLO_TX")] [StringLength(36)] public string TipoLogradouro { get; set; } = null!;
 
     [Column("LOG_STA_TLO")]
     [StringLength(1)]
@@ -51,8 +38,7 @@ public class Logradouro
     public string? NomeAbreviado { get; set; }
 
     // Propriedade para coordenadas geográficas (não está no SQL, mas será útil)
-    [NotMapped]
-    public LineString? Traçado { get; set; }
+    [NotMapped] public LineString? Traçado { get; set; }
 
     // Propriedades de navegação
     public virtual Localidade? Localidade { get; set; }

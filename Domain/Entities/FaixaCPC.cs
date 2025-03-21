@@ -4,12 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Domain.Entities;
 
 /// <summary>
-/// Entidade representando faixas de CPC
+///     Entidade representando faixas de CPC
 /// </summary>
 public class FaixaCPC
 {
-    [Column("CPC_NU")]
-    public int CPCId { get; set; }
+    [Column("CPC_NU")] public int CPCId { get; set; }
 
     [Column("CPC_INICIAL")]
     [StringLength(6)]

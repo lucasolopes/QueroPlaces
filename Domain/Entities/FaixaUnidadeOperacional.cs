@@ -4,12 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Domain.Entities;
 
 /// <summary>
-/// Entidade representando faixas de Unidades Operacionais
+///     Entidade representando faixas de Unidades Operacionais
 /// </summary>
 public class FaixaUnidadeOperacional
 {
-    [Column("UOP_NU")]
-    public int UnidadeOperacionalId { get; set; }
+    [Column("UOP_NU")] public int UnidadeOperacionalId { get; set; }
 
     [Column("FNC_INICIAL")]
     [StringLength(8)]

@@ -4,12 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Domain.Entities;
 
 /// <summary>
-/// Entidade representando seccionamentos de logradouros
+///     Entidade representando seccionamentos de logradouros
 /// </summary>
 public class NumeroSeccionamento
 {
-    [Column("LOG_NU")]
-    public int LogradouroId { get; set; }
+    [Column("LOG_NU")] public int LogradouroId { get; set; }
 
     [Column("SEC_NU_INI")]
     [StringLength(10)]

@@ -3,22 +3,16 @@ using System.Text.Json.Serialization;
 using Application.Extensions;
 using FluentValidation.AspNetCore;
 using Hangfire;
-using Hangfire.PostgreSql;
 using HealthChecks.UI.Client;
 using Infraestructure.Persistence.Extensions;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
-using NetTopologySuite;
-using NetTopologySuite.Geometries;
-using Serilog;
-using StackExchange.Redis;
-// Health Checks
-using HealthChecks.NpgSql;
-// Extensões personalizadas
 using QueroPlaces.Extensions;
 using QueroPlaces.Middleware;
+using Serilog;
+// Health Checks
+// Extensões personalizadas
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -104,18 +98,14 @@ builder.Services.AddHealthChecks()
 // Adicionar Redis Health Check se estiver configurado
 var redisConnection = builder.Configuration.GetConnectionString("Redis");
 if (!string.IsNullOrEmpty(redisConnection))
-{
     builder.Services.AddHealthChecks()
-        .AddRedis(redisConnection, name: "redis", tags: new[] { "cache", "redis" });
-}
+        .AddRedis(redisConnection, "redis", tags: new[] { "cache", "redis" });
 
 // Adicionar Elasticsearch Health Check se estiver configurado
 var elasticsearchUrl = builder.Configuration.GetSection("Elasticsearch:Url").Value;
 if (!string.IsNullOrEmpty(elasticsearchUrl))
-{
     builder.Services.AddHealthChecks()
-        .AddElasticsearch(elasticsearchUrl, name: "elasticsearch", tags: new[] { "search", "elasticsearch" });
-}
+        .AddElasticsearch(elasticsearchUrl, "elasticsearch", tags: new[] { "search", "elasticsearch" });
 
 // Configurar Health Checks UI
 builder.Services.AddHealthChecksUI(options =>
@@ -128,15 +118,14 @@ var app = builder.Build();
 
 // Aguardar as dependências estarem prontas
 if (app.Environment.IsDevelopment())
-{
     try
     {
         // Registrar logger para logs detalhados durante a inicialização
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
-        
+
         // Aguardar a disponibilidade das dependências
         await DependencyExtensions.WaitForDependenciesAsync(
-            builder.Configuration, 
+            builder.Configuration,
             logger);
     }
     catch (Exception ex)
@@ -145,7 +134,6 @@ if (app.Environment.IsDevelopment())
         await app.StopAsync();
         return 1;
     }
-}
 
 // Configurar o pipeline de requisições HTTP
 if (app.Environment.IsDevelopment())
@@ -193,7 +181,8 @@ try
 }
 catch (Exception ex)
 {
-    Log.Warning(ex, "Não foi possível inicializar o dashboard do Hangfire. Funcionalidade de processamento em segundo plano indisponível.");
+    Log.Warning(ex,
+        "Não foi possível inicializar o dashboard do Hangfire. Funcionalidade de processamento em segundo plano indisponível.");
 }
 
 // Iniciar a aplicação

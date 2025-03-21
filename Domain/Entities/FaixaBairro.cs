@@ -4,12 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Domain.Entities;
 
 /// <summary>
-/// Entidade representando faixas de CEP de bairros
+///     Entidade representando faixas de CEP de bairros
 /// </summary>
 public class FaixaBairro
 {
-    [Column("BAI_NU")]
-    public int BairroId { get; set; }
+    [Column("BAI_NU")] public int BairroId { get; set; }
 
     [Column("FCB_CEP_INI")]
     [StringLength(8)]

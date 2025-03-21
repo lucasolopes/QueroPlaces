@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using NetTopologySuite;
+﻿using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using NetTopologySuite.IO.Converters;
 
 namespace QueroPlaces.Extensions;
 
@@ -30,7 +28,7 @@ public static class GeoSpatialExtensions
 }
 
 /// <summary>
-/// Interface para conversão entre diferentes formatos de coordenadas
+///     Interface para conversão entre diferentes formatos de coordenadas
 /// </summary>
 public interface ICoordinateConverter
 {
@@ -44,7 +42,7 @@ public interface ICoordinateConverter
 }
 
 /// <summary>
-/// Implementação do conversor de coordenadas
+///     Implementação do conversor de coordenadas
 /// </summary>
 public class CoordinateConverter : ICoordinateConverter
 {
@@ -96,17 +94,12 @@ public class CoordinateConverter : ICoordinateConverter
     public Polygon CreatePolygon(List<Point> points)
     {
         // Para criar um polígono válido, o primeiro e o último ponto devem ser iguais
-        if (points.Count < 3)
-        {
-            throw new ArgumentException("São necessários pelo menos 3 pontos para criar um polígono");
-        }
+        if (points.Count < 3) throw new ArgumentException("São necessários pelo menos 3 pontos para criar um polígono");
 
         // Verificar se o primeiro e o último ponto são iguais
         if (!points[0].Equals(points[^1]))
-        {
             // Adicionar o primeiro ponto novamente para fechar o anel
             points.Add(points[0]);
-        }
 
         var coordinates = points.Select(p => p.Coordinate).ToArray();
         var ring = _geometryFactory.CreateLinearRing(coordinates);

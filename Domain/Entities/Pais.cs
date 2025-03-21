@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Domain.Entities;
 
 /// <summary>
-/// Entidade representando países
+///     Entidade representando países
 /// </summary>
 public class Pais
 {

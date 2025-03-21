@@ -7,7 +7,8 @@ namespace Infraestructure.Persistence.Extensions;
 
 public static class PersistenceExtensions
 {
-    public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPersistenceServices(this IServiceCollection services,
+        IConfiguration configuration)
     {
         // Configurar o contexto do banco de dados
         services.AddDbContext<AppDbContext>(options =>

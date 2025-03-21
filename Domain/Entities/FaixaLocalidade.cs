@@ -4,12 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Domain.Entities;
 
 /// <summary>
-/// Entidade representando faixas de CEP de localidades
+///     Entidade representando faixas de CEP de localidades
 /// </summary>
 public class FaixaLocalidade
 {
-    [Column("LOC_NU")]
-    public int LocalidadeId { get; set; }
+    [Column("LOC_NU")] public int LocalidadeId { get; set; }
 
     [Column("LOC_CEP_INI")]
     [StringLength(8)]

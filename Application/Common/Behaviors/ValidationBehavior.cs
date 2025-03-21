@@ -1,7 +1,7 @@
-﻿using FluentValidation;
+﻿using System.Diagnostics;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 
 namespace Application.Common.Behaviors;
 
@@ -16,7 +16,8 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         _validators = validators;
     }
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         if (_validators.Any())
         {
@@ -30,10 +31,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
                 .Where(f => f != null)
                 .ToList();
 
-            if (failures.Count != 0)
-            {
-                throw new ValidationException(failures);
-            }
+            if (failures.Count != 0) throw new ValidationException(failures);
         }
 
         return await next();
@@ -51,10 +49,11 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         _logger = logger;
     }
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         var requestName = typeof(TRequest).Name;
-        
+
         _logger.LogInformation("Handling {RequestName}", requestName);
         _logger.LogDebug("Request details: {@Request}", request);
 
@@ -70,8 +69,8 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
 public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly Stopwatch _timer;
     private readonly ILogger<TRequest> _logger;
+    private readonly Stopwatch _timer;
 
     public PerformanceBehavior(ILogger<TRequest> logger)
     {
@@ -79,7 +78,8 @@ public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
         _logger = logger;
     }
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         _timer.Start();
 
