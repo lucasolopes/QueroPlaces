@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using QueroPlaces.Extensions;
 using QueroPlaces.Middleware;
 using Serilog;
+
 // Health Checks
 // Extensões personalizadas
 

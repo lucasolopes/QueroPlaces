@@ -17,7 +17,8 @@ public class AutoMapperProfile : Profile
 
         // Mapeamentos de Localidade
         CreateMap<Localidade, LocalidadeDTO>()
-            .ForMember(dest => dest.TipoLocalidade, opt => opt.MapFrom(src => MapearTipoLocalidade(src.TipoLocalidade)));
+            .ForMember(dest => dest.TipoLocalidade,
+                opt => opt.MapFrom(src => MapearTipoLocalidade(src.TipoLocalidade)));
 
         // Mapeamentos de Logradouro
         CreateMap<Logradouro, LogradouroDTO>()
