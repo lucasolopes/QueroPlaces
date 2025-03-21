@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Application.Extensions;
+using Application.Extensions.GeoSpatial;
 using FluentValidation.AspNetCore;
 using Hangfire;
 using HealthChecks.UI.Client;

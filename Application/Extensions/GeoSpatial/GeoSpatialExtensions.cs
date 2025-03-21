@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Application.Extensions.Extensions.GeoSpatial;
+using Microsoft.Extensions.DependencyInjection;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
-namespace Application.Extensions.Extensions.GeoSpatial;
+namespace Application.Extensions.GeoSpatial;
 
 /// <summary>
 ///     Extensões para adicionar serviços geoespaciais à aplicação
