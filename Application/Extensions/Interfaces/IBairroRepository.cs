@@ -14,4 +14,6 @@ public interface IBairroRepository : IRepository<Bairro>
 
     Task<IReadOnlyList<Bairro>> SearchByNomeAsync(string termo, int localidadeId, int limite = 10,
         CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<Bairro>> SearchByNomeEmQualquerLocalidadeAsync(string termo, int limite = 10, CancellationToken cancellationToken = default);
 }

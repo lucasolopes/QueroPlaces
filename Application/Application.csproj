@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Behaviors\" />
+    <Folder Include="Extensions\Common\Mappings\" />
+    <Folder Include="Features\Bairro\Handlers\" />
+    <Folder Include="Features\Localidade\Handlers\" />
+    <Folder Include="Features\Logradouro\Handlers\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +20,8 @@
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.14" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3" />
     <PackageReference Include="OneOf" Version="3.0.271" />
   </ItemGroup>

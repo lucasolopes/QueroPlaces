@@ -3,7 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Common.Behaviors;
+namespace Application.Extensions.Common.Behaviors;
 
 // Comportamento para validação automática
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
