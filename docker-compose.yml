@@ -7,16 +7,16 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      #elasticsearch:
-      #  condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
       redis:
         condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Database=queroplacedb;Username=postgres;Password=root
       - ConnectionStrings__Redis=redis:6379
-    #  - Elasticsearch__Url=http://elasticsearch:9200
-    #  - Elasticsearch__IndexName=addresses
+      - Elasticsearch__Url=http://elasticsearch:9200
+      - Elasticsearch__IndexName=addresses
     ports:
       - "8080:8080"
     networks:
@@ -42,24 +42,24 @@ services:
       timeout: 5s
       retries: 5
 
-#  elasticsearch:
-#    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
-#    container_name: queroplacedb-elasticsearch
-#    environment:
-#      - discovery.type=single-node
-#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-#      - xpack.security.enabled=false
-#    volumes:
-#      - elasticsearch-data:/usr/share/elasticsearch/data
-#    ports:
-#      - "9200:9200"
-#    networks:
-#      - queroplace-network
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:9200"]
-#      interval: 30s
-#      timeout: 10s
-#      retries: 5
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+    container_name: queroplacedb-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - queroplace-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   # Redis para cache
   redis:
@@ -77,11 +77,24 @@ services:
       timeout: 5s
       retries: 5
 
+  kibana:
+    container_name: kibana
+    image: kibana:8.17.0
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    networks:
+      - queroplace-network
+    
+
 networks:
   queroplace-network:
     driver: bridge
 
 volumes:
   postgres-data:
-  #elasticsearch-data:
+  elasticsearch-data:
   redis-data:
